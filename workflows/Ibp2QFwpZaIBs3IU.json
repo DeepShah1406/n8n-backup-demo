@@ -1,0 +1,864 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "bleepingcomputer",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "livemintPolitics",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "livemintScience",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "livemintIndustry",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "livemintEducation",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "livemintSports",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "livemintTechnology",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "livemintNews",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "livemintAI",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "DeshGujaratNEWS",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "DeshGujaratTechNEWS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "livemintPolitics": {
+      "main": [
+        [
+          {
+            "node": "Limit1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "livemintScience": {
+      "main": [
+        [
+          {
+            "node": "Limit2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "bleepingcomputer": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Limit3": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "livemintIndustry": {
+      "main": [
+        [
+          {
+            "node": "Limit3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "livemintEducation": {
+      "main": [
+        [
+          {
+            "node": "Limit4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit4": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "livemintSports": {
+      "main": [
+        [
+          {
+            "node": "Limit5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit5": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 5
+          }
+        ]
+      ]
+    },
+    "livemintTechnology": {
+      "main": [
+        [
+          {
+            "node": "Limit6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit6": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 6
+          }
+        ]
+      ]
+    },
+    "livemintNews": {
+      "main": [
+        [
+          {
+            "node": "Limit7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit7": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 7
+          }
+        ]
+      ]
+    },
+    "livemintAI": {
+      "main": [
+        [
+          {
+            "node": "Limit8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit8": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 8
+          }
+        ]
+      ]
+    },
+    "DeshGujaratNEWS": {
+      "main": [
+        [
+          {
+            "node": "Limit9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeshGujaratTechNEWS": {
+      "main": [
+        [
+          {
+            "node": "Limit10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit9": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Limit10": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Discord": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-27T09:46:35.454Z",
+  "id": "Ibp2QFwpZaIBs3IU",
+  "isArchived": false,
+  "meta": null,
+  "name": "News Workflow 1.9",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -896,
+        688
+      ],
+      "id": "c0ce4486-3b97-48db-a5fd-ddcd3ff056e1",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://www.livemint.com/rss/politics",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        192
+      ],
+      "id": "89599d39-c217-4124-8e44-f9d4e10bb94a",
+      "name": "livemintPolitics"
+    },
+    {
+      "parameters": {
+        "url": "https://www.livemint.com/rss/science",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        352
+      ],
+      "id": "9e922c1f-cabd-4373-841f-c1fad71149bb",
+      "name": "livemintScience"
+    },
+    {
+      "parameters": {
+        "url": "https://www.livemint.com/rss/industry",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        544
+      ],
+      "id": "1ce9a9c7-6115-4fcb-bc7f-a539d60cc8ba",
+      "name": "livemintIndustry"
+    },
+    {
+      "parameters": {
+        "url": "https://www.livemint.com/rss/education",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        704
+      ],
+      "id": "ecc4c1b5-bac5-4d68-a92b-3ca655f6a3a8",
+      "name": "livemintEducation"
+    },
+    {
+      "parameters": {
+        "url": "https://www.bleepingcomputer.com/feed/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "64ac17b2-910a-418d-942a-76223d113fea",
+      "name": "bleepingcomputer"
+    },
+    {
+      "parameters": {
+        "url": "https://www.livemint.com/rss/sports",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        880
+      ],
+      "id": "9e46f76b-df2e-4e37-b9b4-180e0bd82b54",
+      "name": "livemintSports"
+    },
+    {
+      "parameters": {
+        "url": "https://www.livemint.com/rss/technology",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        1056
+      ],
+      "id": "9859c9a4-3bc0-4f0e-9cde-572a1b88c810",
+      "name": "livemintTechnology"
+    },
+    {
+      "parameters": {
+        "url": "https://www.livemint.com/rss/news",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        1216
+      ],
+      "id": "0efea5d5-c2b3-4286-9a6f-6b7fc4f6cdcb",
+      "name": "livemintNews"
+    },
+    {
+      "parameters": {
+        "url": "https://www.livemint.com/rss/AI",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        1376
+      ],
+      "id": "e280e7f1-c8fd-40fa-8532-4ffe6bd9257e",
+      "name": "livemintAI"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Hey! Your job is to summarise the article in bullet points, extracting the most important details. Format it neatly and use a few emojis for better look.\n\nOutput format:\n• News No. x (instead of x the number of news)\n• Source: {WebsiteName}\n• Author: {AuthorName if available}\n• Published: {Date}\n• Category: {e.g., Tech / Business / Sports / Entertainment / Politics}\n• Reading time (approx): {X min}\n\nKey Takeaway: {One-line summary of why it matters}\n\nSummary bullets:\n– {Important point 1}\n– {Important point 2}\n– {Important point 3}\n…\n\n🔗 Read full article: {Link}\n\nTitle: {{ $json.title }}\nLink: {{ $json.link }}\nSnippet: {{ $json.contentSnippet }}\nContent: {{ $json.content }}\nGUID: {{ $json.guid }}\nPubDate: {{ $json.pubDate }}",
+        "needsFallback": true,
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        1616,
+        672
+      ],
+      "id": "177d33b7-37df-4b14-834a-7e0f4b953321",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        1504,
+        912
+      ],
+      "id": "8ca88c0b-0d5e-4456-97e6-d888d920e712",
+      "name": "Groq Chat Model"
+    },
+    {
+      "parameters": {
+        "numberInputs": 9
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        592,
+        560
+      ],
+      "id": "3adc19a2-9af6-4082-8160-37c665e03284",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "=THERE YOU GO -\n{{ $json.text }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        2032,
+        688
+      ],
+      "id": "01dc39aa-41fc-4b53-a7a8-f1c3f7cb4caa",
+      "name": "Discord",
+      "webhookId": "2ec937d6-b0de-4f49-ab59-acafcd0a2e26"
+    },
+    {
+      "parameters": {
+        "amount": 20
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1376,
+        704
+      ],
+      "id": "54dd48cb-134c-4868-9e1c-01b7937e1b67",
+      "name": "Wait",
+      "webhookId": "8e626531-0f82-4559-9960-601cb38b3eab"
+    },
+    {
+      "parameters": {
+        "url": "https://feeds.feedburner.com/DeshGujarat/news",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        1536
+      ],
+      "id": "be667a40-5568-4318-b48e-9fb654ec292d",
+      "name": "DeshGujaratNEWS"
+    },
+    {
+      "parameters": {
+        "url": "https://deshgujarat.com/category/services/technology-use-it/feed/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        1712
+      ],
+      "id": "67143a28-9664-47e4-b3cb-c6f8df530a00",
+      "name": "DeshGujaratTechNEWS"
+    },
+    {
+      "parameters": {
+        "maxItems": 20
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        176,
+        0
+      ],
+      "id": "6cfe5529-e6be-4c43-af3a-bd16b842d6e3",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "maxItems": 20
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        192,
+        192
+      ],
+      "id": "086affaf-179a-409a-89af-4480b21c104b",
+      "name": "Limit1"
+    },
+    {
+      "parameters": {
+        "maxItems": 20
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        192,
+        352
+      ],
+      "id": "15e59b4d-2b04-4a2f-8c4a-8b2e266a57bb",
+      "name": "Limit2"
+    },
+    {
+      "parameters": {
+        "maxItems": 20
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        192,
+        544
+      ],
+      "id": "66c143e7-a921-4042-b9df-011452443109",
+      "name": "Limit3"
+    },
+    {
+      "parameters": {
+        "maxItems": 20
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        192,
+        704
+      ],
+      "id": "c5751241-77c3-4683-a842-cbb98d038ba9",
+      "name": "Limit4"
+    },
+    {
+      "parameters": {
+        "maxItems": 20
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        192,
+        880
+      ],
+      "id": "d8f73b52-ee9a-4890-be1c-c36bdc8f42b7",
+      "name": "Limit5"
+    },
+    {
+      "parameters": {
+        "maxItems": 20
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        192,
+        1056
+      ],
+      "id": "d494da7d-6d7f-44a8-b31c-b009469e79a8",
+      "name": "Limit6"
+    },
+    {
+      "parameters": {
+        "maxItems": 20
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        192,
+        1216
+      ],
+      "id": "d4c941ed-a719-43bc-a4bd-0211afe22e47",
+      "name": "Limit7"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        896,
+        688
+      ],
+      "id": "bda8f52b-9cd2-4eb4-8df8-66351ef2abe7",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "maxItems": 20
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        192,
+        1376
+      ],
+      "id": "190c7fcb-8636-4d92-81e3-f4970a6a70ce",
+      "name": "Limit8"
+    },
+    {
+      "parameters": {
+        "maxItems": 20
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        192,
+        1536
+      ],
+      "id": "76d525d2-13ae-4263-b07b-ccfb805ab17d",
+      "name": "Limit9"
+    },
+    {
+      "parameters": {
+        "maxItems": 20
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        192,
+        1712
+      ],
+      "id": "8a3cc3a0-bfb1-4b0d-a1b6-db0f8946b914",
+      "name": "Limit10"
+    },
+    {
+      "parameters": {
+        "model": "meta-llama/llama-4-maverick-17b-128e-instruct",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        1712,
+        928
+      ],
+      "id": "f86a5e71-68c8-4b19-8399-b486734550ec",
+      "name": "Groq Chat Model1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1168,
+        688
+      ],
+      "id": "56005cf2-d740-47dc-9ecf-3e188980e09b",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"content\": null,\n  \"embeds\": [\n    {\n      \"title\": \"📰 Title of article\",\n      \"description\": \"**Source:** WebsiteName\\n**Author:** AuthorName\\n**Published:** Date\\n**Category:** Category\\n\\n**Key Takeaway:** …\\n\\n**Summary:**\\n– bullet1\\n– bullet2\\n– bullet3\\n\\n🔗 [Read full article](URL)\",\n      \"color\": 3447003\n    }\n  ]\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1904,
+        928
+      ],
+      "id": "44e73b94-081d-4a3d-86a8-12ebe121e444",
+      "name": "Structured Output Parser"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-11-27T09:46:35.485Z",
+      "createdAt": "2025-11-27T09:46:35.485Z",
+      "role": "workflow:owner",
+      "workflowId": "Ibp2QFwpZaIBs3IU",
+      "projectId": "LWAlEY3p5dqeoHI6"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2025-11-27T09:44:29.563Z",
+      "createdAt": "2025-11-27T09:44:29.563Z",
+      "id": "SsELVvolJDi1dvB6",
+      "name": "Personal"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-11-27T09:46:35.454Z",
+  "versionId": "2b854c9b-36b7-4c5a-8593-cf286df9942e"
+}
