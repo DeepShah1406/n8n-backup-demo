@@ -1,0 +1,179 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-27T09:45:45.581Z",
+  "id": "6xIqBKsyDhY1enSM",
+  "isArchived": false,
+  "meta": null,
+  "name": "Instagram Analytics to Optimized Schedule",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "34a895db-eac3-4fa5-8ecc-0c67719db104",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/tmp/instagram_analytics.csv",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "8fe27bd7-08c8-4853-9f46-35187031e2b9",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "2424c2d8-f9e6-420a-97b3-090b9d790bf2",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Helper: Get time window from hour\nfunction getTimeWindow(hour) {\n  if (hour < 12) return \"Morning\";\n  if (hour < 18) return \"Afternoon\";\n  return \"Evening\";\n}\n\n// Aggregate engagement data\nconst data = $input.all();\nconst grouping = {};\n\nfor (const item of data) {\n  const row = item.json;\n  const postDate = row['Post Date'] || row['post_date'];\n  const postTime = row['Post Time'] || row['post_time'];\n  const contentType = row['Content Type'] || row['content_type'];\n  \n  if (!postDate || !postTime || !contentType) continue;\n  \n  const dt = new Date(`${postDate}T${postTime}`);\n  const weekday = dt.toLocaleDateString('en-US', { weekday: 'long' });\n  const hour = dt.getHours();\n  const window = getTimeWindow(hour);\n  \n  const key = `${contentType}|${weekday}|${window}`;\n  \n  if (!grouping[key]) {\n    grouping[key] = { \n      total: 0, \n      count: 0, \n      weekday, \n      window, \n      type: contentType \n    };\n  }\n  \n  const likes = Number(row.Likes || row.likes || 0);\n  const comments = Number(row.Comments || row.comments || 0);\n  const reach = Number(row.Reach || row.reach || 0);\n  const engagement = likes + comments + reach;\n  \n  grouping[key].total += engagement;\n  grouping[key].count += 1;\n}\n\n// Find top time slots for each content type\nconst results = {};\nObject.values(grouping).forEach(slot => {\n  if (!results[slot.type]) results[slot.type] = [];\n  results[slot.type].push({\n    avgEngagement: slot.total / slot.count,\n    weekday: slot.weekday,\n    window: slot.window\n  });\n});\n\n// Sort and pick top 5 per type\nObject.keys(results).forEach(type => {\n  results[type].sort((a, b) => b.avgEngagement - a.avgEngagement);\n  results[type] = results[type].slice(0, 5);\n});\n\nreturn [{ json: results }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        0
+      ],
+      "id": "cc1bb8a5-e33e-4fc0-80fa-6885e8e40fa8",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the analysis results from previous node\nconst analysisResults = $input.first().json;\n\n// Define content plan\nconst contentPlan = [\n  { type: 'Post', count: 15 },\n  { type: 'Story', count: 8 },\n  { type: 'Reel', count: 8 }\n];\n\n// Get next month date range\nconst today = new Date();\nconst nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);\nconst monthAfter = new Date(today.getFullYear(), today.getMonth() + 2, 0);\nconst daysInMonth = monthAfter.getDate();\n\nconst schedule = [];\n\nfor (const plan of contentPlan) {\n  const slots = analysisResults[plan.type] || [];\n  if (slots.length === 0) continue;\n  \n  let count = plan.count;\n  const interval = Math.floor(daysInMonth / count);\n  \n  for (let i = 0; i < count; i++) {\n    const dayOfMonth = Math.min((i * interval) + 1, daysInMonth);\n    const date = new Date(nextMonth.getFullYear(), nextMonth.getMonth(), dayOfMonth);\n    \n    // Get the best slot for this content type\n    const slot = slots[i % slots.length];\n    \n    // Determine time based on window\n    let time = '10:00';\n    if (slot.window === 'Afternoon') time = '15:00';\n    else if (slot.window === 'Evening') time = '20:00';\n    \n    schedule.push({\n      Date: date.toISOString().split('T')[0],\n      Time: time,\n      Type: plan.type,\n      Window: slot.window,\n      Weekday: date.toLocaleDateString('en-US', { weekday: 'long' }),\n      Reason: `${slot.weekday} ${slot.window} - Avg Engagement: ${Math.round(slot.avgEngagement)}`\n    });\n  }\n}\n\n// Sort by date\nschedule.sort((a, b) => new Date(a.Date) - new Date(b.Date));\n\nreturn schedule.map(item => ({ json: item }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        832,
+        0
+      ],
+      "id": "6cb55d1f-9a58-440d-a5bf-ad9d29056659",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1040,
+        0
+      ],
+      "id": "73df07b9-c77c-4b50-b4a5-357d113ac4c3",
+      "name": "Append row in sheet"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-11-27T09:45:45.640Z",
+      "createdAt": "2025-11-27T09:45:45.640Z",
+      "role": "workflow:owner",
+      "workflowId": "6xIqBKsyDhY1enSM",
+      "projectId": "LWAlEY3p5dqeoHI6"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2025-11-27T09:45:17.098Z",
+      "createdAt": "2025-11-27T09:45:17.098Z",
+      "id": "LpCfSTD0Wl2dg0bi",
+      "name": "KERYAR"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-11-27T09:45:45.581Z",
+  "versionId": "debc576b-652a-4f5c-b983-b9518159dbf4"
+}
