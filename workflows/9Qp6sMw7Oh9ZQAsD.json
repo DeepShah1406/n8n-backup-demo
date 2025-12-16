@@ -1,0 +1,109 @@
+{
+  "active": false,
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-27T10:27:22.931Z",
+  "id": "9Qp6sMw7Oh9ZQAsD",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Rephrase Assistant",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "390e2d15-cdba-4d89-ac38-d24557e8dc33",
+      "name": "When chat message received",
+      "webhookId": "d7798dcb-1c2e-4255-a982-881c1b7134c9"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are an assistant that will check grammar, sentence structure, and word choice. Rephrase or generate a better version of the text provided. Do not add any emojis or extra embellishments—just provide the rephrased or improved version."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        256,
+        16
+      ],
+      "id": "dd0a2f6a-0979-4461-9868-593aa001c1bd",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        192,
+        256
+      ],
+      "id": "634f772f-a108-4d8e-a1c9-7fcde30342fe",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "a6RDFEBnPzOeghGl",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-11-27T10:27:23.216Z",
+      "createdAt": "2025-11-27T10:27:23.216Z",
+      "role": "workflow:owner",
+      "workflowId": "9Qp6sMw7Oh9ZQAsD",
+      "projectId": "LWAlEY3p5dqeoHI6"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2025-11-27T09:45:17.098Z",
+      "createdAt": "2025-11-27T09:45:17.098Z",
+      "id": "LpCfSTD0Wl2dg0bi",
+      "name": "KERYAR"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-11-27T10:29:28.000Z",
+  "versionId": "13d7c896-73ea-4347-9756-f416ca9c3c68"
+}
