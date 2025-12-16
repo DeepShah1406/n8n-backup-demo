@@ -1,0 +1,302 @@
+{
+  "active": false,
+  "connections": {
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Discord": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-02T09:04:21.195Z",
+  "id": "dXMLuhJuh7ujLMo5",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "News Workflow 2.0 Big list",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Hey! Your job is to summarise the article in bullet points, extracting the most important details. Format it neatly and use a few emojis for better look.\n\nOutput format:\n• Source: {WebsiteName}\n• Author: {AuthorName if available}\n• Published: {Date}\n• Category: {e.g., Tech / Business / Sports / Entertainment / Politics}\n• Reading time (approx): {X min}\n\nKey Takeaway: {One-line summary of why it matters}\n\nSummary bullets:\n– {Important point 1}\n– {Important point 2}\n– {Important point 3}\n…\n\n🔗 Read full article: {Link}\n\nTitle: {{ $json.title }}\nLink: {{ $json.link }}\nSnippet: {{ $json.contentSnippet }}\nContent: {{ $json.content }}\nGUID: {{ $json.guid }}\nPubDate: {{ $json.pubDate }}",
+        "needsFallback": true,
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        1584,
+        672
+      ],
+      "id": "8b74173a-95ac-4a2e-aa19-ec3fda166b0c",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        1600,
+        896
+      ],
+      "id": "36ecc195-aa32-4a3e-a645-082be205bdd7",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "5ak8btP5PbtODyhw",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "=THERE YOU GO -\n{{ $json.text }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1936,
+        800
+      ],
+      "id": "30bd367a-84a3-4b3b-a93b-631e22d02e49",
+      "name": "Discord",
+      "webhookId": "638946f4-e3e1-44fd-a6e9-e79eb5622b8b",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "KkHuTtciUr8TVwyS",
+          "name": "Discord Webhook account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 20
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1360,
+        672
+      ],
+      "id": "90e4a288-f247-462a-873d-056826283dc4",
+      "name": "Wait",
+      "webhookId": "91393e29-cd11-448e-a97e-28dc022dd97b"
+    },
+    {
+      "parameters": {
+        "model": "meta-llama/llama-4-maverick-17b-128e-instruct",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        1728,
+        896
+      ],
+      "id": "8bc3ed48-c778-48e7-9485-539f26900cb9",
+      "name": "Groq Chat Model1",
+      "credentials": {
+        "groqApi": {
+          "id": "5ak8btP5PbtODyhw",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1136,
+        800
+      ],
+      "id": "2203f970-4bd8-4af7-9d2a-c6868bfaa320",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"content\": null,\n  \"embeds\": [\n    {\n      \"title\": \"📰 Title of article\",\n      \"description\": \"**Source:** WebsiteName\\n**Author:** AuthorName\\n**Published:** Date\\n**Category:** Category\\n\\n**Key Takeaway:** …\\n\\n**Summary:**\\n– bullet1\\n– bullet2\\n– bullet3\\n\\n🔗 [Read full article](URL)\",\n      \"color\": 3447003\n    }\n  ]\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1856,
+        1040
+      ],
+      "id": "b6dfc237-6792-4b95-9690-c41bf123e79c",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        464,
+        800
+      ],
+      "id": "43f67c61-482b-4bff-9860-63b07bb6bde5",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "return[\n  { \"json\": { \"feed\": \"https://www.xda-developers.com/feed/\" } },\n  { \"json\": { \"feed\": \"https://www.xda-developers.com/feed/news/\" } },\n  { \"json\": { \"feed\": \"https://www.xda-developers.com/feed/category/pc-hardware/\" } },\n  { \"json\": { \"feed\": \"https://www.xda-developers.com/feed/processor/\" } },\n  { \"json\": { \"feed\": \"https://www.xda-developers.com/feed/productivity/\" } },\n  { \"json\": { \"feed\": \"https://www.xda-developers.com/feed/devices/\" } },\n  { \"json\": { \"feed\": \"https://www.xda-developers.com/feed/laptops/\" } },\n  { \"json\": { \"feed\": \"https://www.xda-developers.com/feed/networking/\" } },\n  { \"json\": { \"feed\": \"https://www.xda-developers.com/feed/smart-home/\" } },\n  { \"json\": { \"feed\": \"https://www.xda-developers.com/feed/software-and-services/\" } },\n  { \"json\": { \"feed\": \"https://www.xda-developers.com/feed/gaming/\" } },\n  { \"json\": { \"feed\": \"https://www.bleepingcomputer.com/feed/\" } },\n  { \"json\": { \"feed\": \"https://www.livemint.com/rss/politics\" } },\n  { \"json\": { \"feed\": \"https://www.livemint.com/rss/science\" } },\n  { \"json\": { \"feed\": \"https://www.livemint.com/rss/industry\" } },\n  { \"json\": { \"feed\": \"https://www.livemint.com/rss/education\" } },\n  { \"json\": { \"feed\": \"https://www.livemint.com/rss/sports\" } },\n  { \"json\": { \"feed\": \"https://www.livemint.com/rss/technology\" } },\n  { \"json\": { \"feed\": \"https://www.livemint.com/rss/news\" } },\n  { \"json\": { \"feed\": \"https://www.livemint.com/rss/AI\" } },\n  { \"json\": { \"feed\": \"https://feeds.feedburner.com/DeshGujarat/news\" } },\n  { \"json\": { \"feed\": \"https://deshgujarat.com/category/services/technology-use-it/feed/\" } },\n  { \"json\": { \"feed\": \"https://rss.app/feeds/QMRjU7P3Gcw9B2Mb.xml\" } },\n  { \"json\": { \"feed\": \"https://rss.app/feeds/HP6XfRZO1B3fWjpP.xml\" } },\n  { \"json\": { \"feed\": \"https://rss.app/feeds/Bok5LQ5BVAh1GcbF.xml\" } },\n  { \"json\": { \"feed\": \"https://rss.app/feeds/KYSKyRxsxjaDh6eL.xml\" } },\n  { \"json\": { \"feed\": \"https://rss.app/feeds/V8tJvIcWk3umYD9l.xml\" } }\n]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        688,
+        800
+      ],
+      "id": "faefac35-38cb-4a06-b98a-c3a2f30a4ccb",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.feed }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        912,
+        800
+      ],
+      "id": "8fadc94f-9418-4644-9922-c8e19cd6f96b",
+      "name": "RSS Read"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-12-02T09:04:21.257Z",
+      "createdAt": "2025-12-02T09:04:21.257Z",
+      "role": "workflow:owner",
+      "workflowId": "dXMLuhJuh7ujLMo5",
+      "projectId": "LWAlEY3p5dqeoHI6"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2025-12-12T06:34:30.450Z",
+      "createdAt": "2025-12-12T06:34:30.450Z",
+      "id": "6TDCjlUJCB2eki1P",
+      "name": "NEWS"
+    },
+    {
+      "updatedAt": "2025-11-27T09:44:29.563Z",
+      "createdAt": "2025-11-27T09:44:29.563Z",
+      "id": "SsELVvolJDi1dvB6",
+      "name": "Personal"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-12-12T06:35:57.000Z",
+  "versionId": "7d26c0cb-7d2e-4c89-8dad-a3d85f627482"
+}
