@@ -1,0 +1,711 @@
+{
+  "active": false,
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "RSS Feeds",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Feeds": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "getContent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "getContent": {
+      "main": [
+        [
+          {
+            "node": "Markdown",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Markdown": {
+      "main": [
+        [
+          {
+            "node": "summarizeArticles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "summarizeArticles": {
+      "main": [
+        [
+          {
+            "node": "setFields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "setFields": {
+      "main": [
+        [
+          {
+            "node": "Airtable1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GPT 4o-mini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "summarizeArticles",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-02T07:13:02.867Z",
+  "id": "w1Koj8H9T2Bv0L5B",
+  "isArchived": false,
+  "meta": null,
+  "name": "RSS Feed Scraper - YT",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -784,
+        160
+      ],
+      "id": "256473f0-0f50-43da-8f56-0bb48779901e",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "jsCode": "return[\n  { \"json\": { \"feed\": \"https://www.bleepingcomputer.com/feed/\" } },\n  { \"json\": { \"feed\": \"https://www.livemint.com/rss/politics\" } },\n  { \"json\": { \"feed\": \"https://www.livemint.com/rss/science\" } },\n  { \"json\": { \"feed\": \"https://www.livemint.com/rss/industry\" } },\n  { \"json\": { \"feed\": \"https://www.livemint.com/rss/education\" } },\n  { \"json\": { \"feed\": \"https://www.livemint.com/rss/sports\" } },\n  { \"json\": { \"feed\": \"https://www.livemint.com/rss/technology\" } },\n  { \"json\": { \"feed\": \"https://www.livemint.com/rss/news\" } },\n  { \"json\": { \"feed\": \"https://www.livemint.com/rss/AI\" } },\n  { \"json\": { \"feed\": \"https://feeds.feedburner.com/DeshGujarat/news\" } },\n  { \"json\": { \"feed\": \"https://deshgujarat.com/category/services/technology-use-it/feed/\" } }\n]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -640,
+        160
+      ],
+      "id": "9a868425-31b9-417f-adc4-b45e57f23dfa",
+      "name": "RSS Feeds"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -400,
+        160
+      ],
+      "id": "499db693-e909-4cba-93cc-fe3601a2e13a",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.feed }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -224,
+        272
+      ],
+      "id": "25409318-15d3-4c4e-8cbb-d4c4d0b3d0f8",
+      "name": "RSS Read"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "aabfdeff-d854-4ea8-9446-a77fae3c589e",
+              "leftValue": "={{ $('RSS Read').first().json.pubDate }}",
+              "rightValue": "={{ DateTime.now().minus({ days: 3 }) }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "afterOrEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -224,
+        128
+      ],
+      "id": "889c1b2f-c788-4d24-b8fe-06531f577156",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "maxItems": 3
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        64,
+        112
+      ],
+      "id": "fc2c6b1e-57fb-4d1a-a9a8-b5eee8053b51",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('If').item.json.link }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        288,
+        112
+      ],
+      "id": "6dc5a5f8-cd05-44b7-bc59-a649ae4c37e4",
+      "name": "getContent"
+    },
+    {
+      "parameters": {
+        "html": "={{ $json.data }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.markdown",
+      "typeVersion": 1,
+      "position": [
+        432,
+        112
+      ],
+      "id": "6c4d44a7-4b33-4273-881b-fd58a181ae85",
+      "name": "Markdown"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.data }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are a helpful, intelligent summarizer assistant. Your task is to identify the  main body text of the article and create a detailed summary of its contents. Identify any key subjects or themes and the main topic of the article.\n\nSummaries should be no more than 1000 characters. do not include any extra words or phrases like \"summary of article\" or \"the article discusses\""
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        48,
+        368
+      ],
+      "id": "1581b8bb-59a8-4892-83a1-4a22dd707611",
+      "name": "summarizeArticles"
+    },
+    {
+      "parameters": {
+        "authentication": "airtableOAuth2Api",
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appQ4oga8PGMIYQeH",
+          "mode": "list",
+          "cachedResultName": "n8n - Social Content - YT",
+          "cachedResultUrl": "https://airtable.com/appQ4oga8PGMIYQeH"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblZwA0JCNPeORaGi",
+          "mode": "list",
+          "cachedResultName": "Social Posts",
+          "cachedResultUrl": "https://airtable.com/appNHfiGGwCjBtUnw/tblZwA0JCNPeORaGi"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "needsImage?": "No",
+            "sourceHeadline": "={{ $json.sourceHeadline }}",
+            "sourceSummary": "={{ $json.sourceSummary }}",
+            "sourceURL": "={{ $json.sourceURL }}",
+            "Status": "Waiting for Content"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "sourceHeadline",
+              "displayName": "sourceHeadline",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "sourceSummary",
+              "displayName": "sourceSummary",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "goToArticle",
+              "displayName": "goToArticle",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "socialChannels",
+              "displayName": "socialChannels",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "options": [
+                {
+                  "name": "Twitter",
+                  "value": "Twitter"
+                },
+                {
+                  "name": "LinkedIn",
+                  "value": "LinkedIn"
+                },
+                {
+                  "name": "Blog",
+                  "value": "Blog"
+                },
+                {
+                  "name": "Instagram",
+                  "value": "Instagram"
+                },
+                {
+                  "name": "Facebook",
+                  "value": "Facebook"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "needsImage?",
+              "displayName": "needsImage?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Yes",
+                  "value": "Yes"
+                },
+                {
+                  "name": "No",
+                  "value": "No"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "twitterCopy",
+              "displayName": "twitterCopy",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "linkedinCopy",
+              "displayName": "linkedinCopy",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "blogCopy",
+              "displayName": "blogCopy",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "imagePrompt",
+              "displayName": "imagePrompt",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "postImage",
+              "displayName": "postImage",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Waiting for Content",
+                  "value": "Waiting for Content"
+                },
+                {
+                  "name": "Needs Approval",
+                  "value": "Needs Approval"
+                },
+                {
+                  "name": "Approved",
+                  "value": "Approved"
+                },
+                {
+                  "name": "Posted",
+                  "value": "Posted"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "datePosted",
+              "displayName": "datePosted",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "sourceURL",
+              "displayName": "sourceURL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        640,
+        368
+      ],
+      "id": "829f64d5-8ece-4126-9611-8b1d00c4e84b",
+      "name": "Airtable1"
+    },
+    {
+      "parameters": {
+        "content": "## Add RSS Feeds",
+        "height": 260,
+        "width": 340
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -816,
+        80
+      ],
+      "id": "2dcf3607-5a54-4ab9-a18a-c2373d42f720",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Get Articles",
+        "height": 420,
+        "width": 440,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        80
+      ],
+      "id": "3417e53c-1ec1-4e79-9f58-6189382b0624",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Set number of articles per feed",
+        "height": 240,
+        "width": 220,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "48b2938d-8ec5-4585-b4f9-89a1110fbc70",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Extract + convert HTML",
+        "height": 240,
+        "width": 340,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        240,
+        0
+      ],
+      "id": "63e391db-20c9-4e08-ab2a-059a60ae6484",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"sourceSummary\": {{ JSON.stringify($json.text) }},\n  \"sourceURL\": {{ JSON.stringify($('Limit').item.json.link) }},\n  \"sourceHeadline\": {{ JSON.stringify($('Limit').item.json.title) }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        432,
+        368
+      ],
+      "id": "ceb52782-596f-40e9-ace9-fa450661727e",
+      "name": "setFields"
+    },
+    {
+      "parameters": {
+        "content": "## Create Summary",
+        "height": 220,
+        "width": 360,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        288
+      ],
+      "id": "5a6d6a12-a1ac-4104-98eb-a4357c35daac",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Set Outputs",
+        "height": 220,
+        "width": 200,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        384,
+        288
+      ],
+      "id": "6271b638-5253-459f-b546-01f12257e7e4",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Store Data",
+        "height": 220,
+        "width": 180,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        608,
+        288
+      ],
+      "id": "b5e4bc20-6505-48d3-a982-78ac14e4aa49",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -64,
+        528
+      ],
+      "id": "641b8ab6-5296-4b3f-aca6-05505cc56601",
+      "name": "GPT 4o-mini"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-12-02T07:13:02.900Z",
+      "createdAt": "2025-12-02T07:13:02.900Z",
+      "role": "workflow:owner",
+      "workflowId": "w1Koj8H9T2Bv0L5B",
+      "projectId": "LWAlEY3p5dqeoHI6"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2025-12-02T07:02:15.870Z",
+      "createdAt": "2025-12-02T07:02:15.870Z",
+      "id": "ddX06s63KfrqoaLx",
+      "name": "YouTube Tutorial"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-12-02T07:13:02.867Z",
+  "versionId": "8b1a48e8-0676-46d0-a163-019eff059a8e"
+}
