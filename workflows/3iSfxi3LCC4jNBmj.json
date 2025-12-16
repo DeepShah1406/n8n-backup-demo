@@ -1,0 +1,423 @@
+{
+  "active": false,
+  "connections": {
+    "GetDate": {
+      "main": [
+        [
+          {
+            "node": "MergeHeadlinesDate",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "SingleJson": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetFrontPage": {
+      "main": [
+        [
+          {
+            "node": "ExtractDetails",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetHeadlines": {
+      "main": [
+        [
+          {
+            "node": "MergeHeadlinesDate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ExtractDetails": {
+      "main": [
+        [
+          {
+            "node": "GetHeadlines",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "GetDate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CleanUpYearList": {
+      "main": [
+        [
+          {
+            "node": "SplitOutYearList",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CreateYearsList": {
+      "main": [
+        [
+          {
+            "node": "CleanUpYearList",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "CreateYearsList",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SplitOutYearList": {
+      "main": [
+        [
+          {
+            "node": "GetFrontPage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MergeHeadlinesDate": {
+      "main": [
+        [
+          {
+            "node": "SingleJson",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-03T11:48:29.407Z",
+  "id": "3iSfxi3LCC4jNBmj",
+  "isArchived": false,
+  "meta": null,
+  "name": "Hacker_News",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a highly skilled news categorizer, specializing in indentifying interesting stuff from Hacker News front-page headlines.\n\nYou are provided with JSON data containing a list of dates and their corresponding top headlines from the Hacker News front page. Each headline will also include a URL linking to the original article or discussion. Importantly, the dates provided will be the SAME DAY across MULTIPLE YEARS (e.g., January 1st, 2023, January 1st, 2022, January 1st, 2021, etc.). You need to indentify key headlines and also analyze how the tech landscape has evolved over the years, as reflected in the headlines for this specific day.\n\nYour task is to indentify top 10-15 headlines from across the years from the given json data and return in Markdown formatted bullet points categorizing into themes and adding markdown hyperlinks to the source URL with Prefixing Year before the headline. Follow the Output Foramt Mentioned.\n\n**Input Format:**\n\n```json\n[\n {\n \"headlines\": [\n \"Headline 1 Title [URL1]\",\n \"Headline 2 Title [URL2]\",\n \"Headline 3 Title [URL3]\",\n ...\n ]\n \"date\": \"YYYY-MM-DD\",\n },\n {\n \"headlines\": [\n \"Headline 1 Title [URL1]\",\n \"Headline 2 Title [URL2]\",\n ...\n ]\n \"date\": \"YYYY-MM-DD\",\n },\n ...\n]\n```\n\n**Output Format In Markdown**\n\n```\n# HN Lookback <FullMonthName-DD> | <start YYYY> to <end YYYY> \n\n## [Theme 1]\n- YYYY [Headline 1](URL1)\n- YYYY [Headline 2](URL2)\n...\n\n## [Theme 2]\n- YYYY [Headline 1](URL1)\n- YYYY [Headline 2](URL2)\n...\n\n... \n\n## <this is optional>\n<if any interesing ternds emerge mention them in oneline>\n```\n\n**Here is the Json data for Hackernews Headlines across the years**\n\n```\n{{ JSON.stringify($json.data) }}\n```"
+      },
+      "id": "a3328c58-5258-4cb0-83cb-337294f9d040",
+      "name": "Basic LLM Chain",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        416,
+        96
+      ],
+      "typeVersion": 1.5
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-pro",
+        "options": {}
+      },
+      "id": "8fa36640-aa55-4d18-8ac5-6e7f44ec3680",
+      "name": "Google Gemini Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "position": [
+        608,
+        256
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 21
+            }
+          ]
+        }
+      },
+      "id": "747059e1-a0d4-4384-aacf-642ee89f9cfd",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [
+        -1520,
+        96
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "jsCode": "for (const item of $input.all()) {\n const currentDateStr = item.json.timestamp.split('T')[0];\n const currentDate = new Date(currentDateStr);\n const currentYear = currentDate.getFullYear();\n const currentMonth = currentDate.getMonth(); // 0 for January, 1 for February, etc.\n const currentDay = currentDate.getDate();\n\n const datesToFetch = [];\n for (let year = currentYear; year >= 2007; year--) {\n let targetDate;\n if (year === 2007) {\n // Special handling for 2007 to start from Feb 19\n if (currentMonth > 1 || (currentMonth === 1 && currentDay >= 19))\n {\n targetDate = new Date(2007, 1, 19); // Feb 19, 2007\n } else {\n continue; // Skip 2007 if currentDate is before Feb 19\n }\n } else {\n targetDate = new Date(year, currentMonth, currentDay);\n }\n \n // Format the date as YYYY-MM-DD\n const formattedDate = targetDate.toISOString().split('T')[0];\n datesToFetch.push(formattedDate);\n }\n item.json.datesToFetch = datesToFetch;\n}\n\nreturn $input.all();"
+      },
+      "id": "804f76a2-4162-45bc-a8ce-e9f5737a1b40",
+      "name": "CreateYearsList",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        -1344,
+        96
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b269dc0d-21e1-4124-8f3a-2c7bfa4add5c",
+              "name": "datesToFetch",
+              "type": "array",
+              "value": "={{ $json.datesToFetch }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fe997fd7-0021-4182-a67f-2837b1d29639",
+      "name": "CleanUpYearList",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        -1152,
+        96
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "datesToFetch",
+        "options": {}
+      },
+      "id": "b8bfb8da-2a3b-4bd2-a392-17177170b5b9",
+      "name": "SplitOutYearList",
+      "type": "n8n-nodes-base.splitOut",
+      "position": [
+        -944,
+        96
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "=https://news.ycombinator.com/front",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "day",
+              "value": "={{ $json.datesToFetch }}"
+            }
+          ]
+        },
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 3000
+            }
+          }
+        }
+      },
+      "id": "cf90db24-bb45-4343-87a9-46b24903a7a8",
+      "name": "GetFrontPage",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -720,
+        96
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "=headlines",
+              "cssSelector": ".titleline",
+              "skipSelectors": "span",
+              "returnArray": true
+            },
+            {
+              "key": "date",
+              "cssSelector": ".pagetop > font"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e04ec563-e41d-4a0e-b5f7-2598c8b17828",
+      "name": "ExtractDetails",
+      "type": "n8n-nodes-base.html",
+      "position": [
+        -512,
+        96
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e1ce33e9-e4f8-4215-bbdb-156a955a0a97",
+              "name": "headlines",
+              "type": "array",
+              "value": "={{ $json.headlines }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e9c03db1-6c45-4cd0-985c-23fad2dbcf43",
+      "name": "GetHeadlines",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        -224,
+        -16
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fc1d15f6-a999-4d6b-a7bc-3ffa9427679e",
+              "name": "date",
+              "type": "string",
+              "value": "={{ $json.date }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "98000c44-da95-46cb-93db-43d1b420ce3e",
+      "name": "GetDate",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        -224,
+        176
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "id": "0985ace0-30ab-41bc-9577-78fa5399a572",
+      "name": "MergeHeadlinesDate",
+      "type": "n8n-nodes-base.merge",
+      "position": [
+        48,
+        96
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "id": "66798f11-9d14-4f58-98f2-9ffe64d863b3",
+      "name": "SingleJson",
+      "type": "n8n-nodes-base.aggregate",
+      "position": [
+        240,
+        96
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "chatId": "@OnThisDayHN",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "4247014e-c4b1-4627-990b-0cccf5ffcc32",
+      "name": "Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        880,
+        96
+      ],
+      "typeVersion": 1.2,
+      "webhookId": "50b94fdd-6495-4fdd-8854-e679c023eaec"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-12-03T11:48:29.427Z",
+      "createdAt": "2025-12-03T11:48:29.427Z",
+      "role": "workflow:owner",
+      "workflowId": "3iSfxi3LCC4jNBmj",
+      "projectId": "LWAlEY3p5dqeoHI6"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2025-11-27T09:44:29.563Z",
+      "createdAt": "2025-11-27T09:44:29.563Z",
+      "id": "SsELVvolJDi1dvB6",
+      "name": "Personal"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-12-03T11:49:29.000Z",
+  "versionId": "74bef096-df97-410e-aed0-623a4050931b"
+}
